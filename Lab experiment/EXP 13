@@ -1,0 +1,57 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import r2_score
+
+# Create car price dataset
+data = {
+    'Year': [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022],
+    'Mileage': [50000, 45000, 40000, 35000, 30000, 25000, 20000, 15000],
+    'Engine': [1200, 1300, 1400, 1500, 1600, 1800, 2000, 2200],
+    'Price': [450000, 500000, 550000, 600000,
+              650000, 700000, 800000, 900000]
+}
+
+df = pd.DataFrame(data)
+
+print("Car Price Dataset:")
+print(df)
+
+# Features and target
+X = df[['Year', 'Mileage', 'Engine']]
+y = df['Price']
+
+# Split the dataset
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.25, random_state=42
+)
+
+# Create Linear Regression model
+model = LinearRegression()
+
+# Train the model
+model.fit(X_train, y_train)
+
+# Predict test data
+y_pred = model.predict(X_test)
+
+print("\nActual Prices:")
+print(y_test.values)
+
+print("\nPredicted Prices:")
+print(y_pred.astype(int))
+
+# Calculate R2 score
+score = r2_score(y_test, y_pred)
+print("\nR2 Score:", round(score, 2))
+
+# Predict price of a new car
+new_car = [[2020, 25000, 1800]]
+prediction = model.predict(new_car)
+
+print("\nNew Car Details:")
+print("Year = 2020")
+print("Mileage = 25000 km")
+print("Engine = 1800 cc")
+
+print("\nPredicted Car Price: ₹", int(prediction[0]))
