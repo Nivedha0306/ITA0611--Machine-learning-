@@ -1,0 +1,54 @@
+data = [
+    ['Sunny', 'Warm', 'Normal', 'Strong', 'Warm', 'Same', 'Yes'],
+    ['Sunny', 'Warm', 'High', 'Strong', 'Warm', 'Same', 'Yes'],
+    ['Rainy', 'Cold', 'High', 'Strong', 'Warm', 'Change', 'No'],
+    ['Sunny', 'Warm', 'High', 'Strong', 'Cool', 'Change', 'Yes']
+]
+
+print("Training Data:")
+for row in data:
+    print(row)
+
+S = ['Ø'] * 6
+G = [['?'] * 6]
+
+for row in data:
+    example = row[:-1]
+    target = row[-1]
+
+    if target == 'Yes':
+        for i in range(6):
+            if S[i] == 'Ø':
+                S[i] = example[i]
+            elif S[i] != example[i]:
+                S[i] = '?'
+
+        G = [
+            g for g in G
+            if all(g[i] == '?' or g[i] == example[i]
+                   for i in range(6))
+        ]
+
+    else:
+        new_G = []
+        for g in G:
+            for i in range(6):
+                if g[i] == '?' and S[i] not in ['?', 'Ø']:
+                    new_h = g.copy()
+                    new_h[i] = S[i]
+                    new_G.append(new_h)
+        G = new_G
+
+print("\nSpecific Boundary (S):")
+print(S)
+
+print("\nGeneral Boundary (G):")
+for hypothesis in G:
+    print(hypothesis)
+
+
+
+
+
+
+
